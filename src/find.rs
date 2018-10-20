@@ -24,7 +24,7 @@ impl Regex {
         let mut region = Region::new();
         self.search_with_options(
             text,
-            usize,
+            pos,
             text.len(),
             SearchOptions::SEARCH_OPTION_NONE,
             Some(&mut region),
