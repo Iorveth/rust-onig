@@ -19,6 +19,21 @@ impl Regex {
             offset: pos,
         })
     }
+	
+	 pub fn captures_at<'t>(&self, text: &'t str, pos: usize) -> Option<Captures<'t>> {
+        let mut region = Region::new();
+        self.search_with_options(
+            text,
+            usize,
+            text.len(),
+            SearchOptions::SEARCH_OPTION_NONE,
+            Some(&mut region),
+        ).map(|pos| Captures {
+            text: text,
+            region: region,
+            offset: pos,
+        })
+    }
 
     /// Returns an iterator for each successive non-overlapping match in `text`,
     /// returning the start and end byte indices with respect to `text`.
