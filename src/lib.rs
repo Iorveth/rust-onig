@@ -751,7 +751,11 @@ impl Regex {
     pub fn find(&self, text: &str) -> Option<(usize, usize)> {
         self.find_with_encoding(text)
     }
-
+	
+	pub fn find_at(&self, text: &str, pos: usize) -> Option<(usize, usize)> {
+        self.find_with_encoding_at(text, pos)
+    }
+	
     /// Find a Match in a Buffer, With Encoding
     ///
     /// Finds the first match of the regular expression within the
@@ -776,6 +780,21 @@ impl Regex {
         self.search_with_encoding(
             text,
             0,
+            len,
+            SearchOptions::SEARCH_OPTION_NONE,
+            Some(&mut region),
+        ).and_then(|_| region.pos(0))
+    }
+	
+	pub fn find_with_encoding_at<T>(&self, text: T, pos: usize) -> Option<(usize, usize)>
+    where
+        T: EncodedChars,
+    {
+        let mut region = Region::new();
+        let len = text.len();
+        self.search_with_encoding(
+            text,
+            pos,
             len,
             SearchOptions::SEARCH_OPTION_NONE,
             Some(&mut region),
